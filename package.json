@@ -4,11 +4,13 @@
   "description": "A blatant ripoff",
   "main": "index.js",
   "scripts": {
+    "build": "tsc && npm run style && cp index.template.html dist/index.html",
+    "deploy": "npm run build && bash ./deploy.sh",
     "lite": "lite-server",
     "postinstall": "typings install",
-    "start": "concurrently \"npm run tsc -- -w\" \"npm run lite\" \"npm run style\"",
-    "build": "tsc && npm run style",
+    "start": "npm run build && concurrently \"npm run tsc -- -w\" \"npm run lite\" \"npm run style:w\"",
     "style": "lessc style.less dist/style.css",
+    "style:w": "less-watch-compiler",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "typings": "typings"
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
+    "less-watch-compiler": "^1.4.2",
     "lite-server": "^2.2.2",
     "tslint": "^4.1.1"
   }
