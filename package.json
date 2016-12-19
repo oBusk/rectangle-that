@@ -1,0 +1,27 @@
+{
+  "name": "rectangle-that",
+  "version": "0.0.1",
+  "description": "A blatant ripoff",
+  "main": "index.js",
+  "scripts": {
+    "lite": "lite-server",
+    "postinstall": "typings install",
+    "start": "concurrently \"npm run tsc -- -w\" \"npm run lite\" \"npm run style\"",
+    "style": "lessc style.less style.css",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "typings": "typings"
+  },
+  "author": "Oscar Busk <oscar.busk@gmail.com>",
+  "private": true,
+  "dependencies": {
+    "less": "^2.7.1",
+    "typescript": "^2.1.4",
+    "typings": "^2.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.2.2",
+    "tslint": "^4.1.1"
+  }
+}
