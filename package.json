@@ -7,7 +7,8 @@
     "lite": "lite-server",
     "postinstall": "typings install",
     "start": "concurrently \"npm run tsc -- -w\" \"npm run lite\" \"npm run style\"",
-    "style": "lessc style.less style.css",
+    "build": "tsc && npm run style",
+    "style": "lessc style.less dist/style.css",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "typings": "typings"
