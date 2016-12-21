@@ -150,40 +150,34 @@ function isLevelCompleted() {
     return !currentLevel.some(row => row.some(cell => cell === 1));
 }
 
-$(document).on('keydown', (e) => {
+function move(direction: 'up' | 'right' | 'down' | 'left') {
     const moversCoords = getIndexesOfK(currentLevel, 2);
-    console.log(moversCoords);
 
-    switch (e.keyCode) {
-        case 87: // w
-        case 38: // ↑
-            moversCoords.forEach(moverCoord => {
+    moversCoords.forEach(moverCoord => {
+        switch (direction) {
+            case 'up':
                 visit({ x: moverCoord.x, y: moverCoord.y }, { x: moverCoord.x, y: moverCoord.y - 1 });
-            });
-            break;
-        case 68: // d
-        case 39: // →
-            moversCoords.forEach(moverCoord => {
+                break;
+            case 'right':
                 visit({ x: moverCoord.x, y: moverCoord.y }, { x: moverCoord.x + 1, y: moverCoord.y });
-            });
-            break;
-        case 83: // s
-        case 40: // ↓
-            moversCoords.forEach(moverCoord => {
+                break;
+            case 'down':
                 visit({ x: moverCoord.x, y: moverCoord.y }, { x: moverCoord.x, y: moverCoord.y + 1 });
-            });
-            break;
-        case 65: // a
-        case 37: // ←
-            moversCoords.forEach(moverCoord => {
+                break;
+            case 'left':
                 visit({ x: moverCoord.x, y: moverCoord.y }, { x: moverCoord.x - 1, y: moverCoord.y });
-            });
-            break;
-        case 82: // r
-            startLevel(currentLevelNumber); // RESET CURRENT LEVEL
-            break;
-    }
+                break;
+            default:
+                throw 'unexpected direction';
+        }
+    });
+}
 
+function reset() {
+    startLevel(currentLevelNumber); // RESET CURRENT LEVEL
+}
+
+function update() {
     applyLevelState(currentLevel, cells.arrayGrid);
 
     if (isLevelCompleted()) {
@@ -195,4 +189,71 @@ $(document).on('keydown', (e) => {
             alert('CONGRATS');
         }
     }
-});
+}
+
+$(document)
+    .on('keydown', (e) => {
+
+        switch (e.keyCode) {
+            case 87: // w
+            case 38: // ↑
+                move('up');
+                break;
+            case 68: // d
+            case 39: // →
+                move('right');
+                break;
+            case 83: // s
+            case 40: // ↓
+                move('down');
+                break;
+            case 65: // a
+            case 37: // ←
+                move('left');
+                break;
+            case 82: // r
+                reset();
+                break;
+        }
+
+        update();
+    });
+
+let touchStartPosition: { x: number, y: number };
+let lastTouchMovePosition: { x: number, y: number };
+
+$(document)
+    .on('touchstart', (e: any) => {
+        touchStartPosition = { x: e.changedTouches[0].screenX, y: e.changedTouches[0].screenY };
+    })
+    .on('touchmove', (e: any) => {
+        lastTouchMovePosition = { x: e.changedTouches[0].screenX, y: e.changedTouches[0].screenY };
+    })
+    .on('touchend', (e: any) => {
+        const minTouchDistance = 30;
+
+        const delta = {
+            x: lastTouchMovePosition.x - touchStartPosition.x,
+            y: lastTouchMovePosition.y - touchStartPosition.y,
+        }
+
+        console.log(delta);
+
+        if (Math.abs(delta.x) < minTouchDistance && Math.abs(delta.y) < minTouchDistance) {
+            // neither of the horizontal or vertical was long enough
+            return;
+        } else if (Math.abs(delta.x) > Math.abs(delta.y)) {
+            // move horizontally
+            move(delta.x < 0 ? 'left' : 'right');
+        } else {
+            // move vertically
+            move(delta.y < 0 ? 'up' : 'down');
+        }
+
+        update();
+    })
+
+$('#reset-button').on('mousedown', () => {
+    reset();
+})
+
