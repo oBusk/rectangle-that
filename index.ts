@@ -5,7 +5,7 @@ type Coords = { x: number, y: number };
 const $game = $('game');
 const levels: { background: string; level: Level }[] = [
     {
-        background: 'linear-gradient(to left, #FBD3E9, #BB377D)',
+        background: 'linear-gradient(to left, #56ab2f , #a8e063)',
         level: [
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0],

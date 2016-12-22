@@ -1,0 +1,14 @@
+{
+    "name": "▮ Rectangle That!",
+    "short_name": "Rectangle",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#56ab2f",
+    "description": "A simple ripoff",
+    "related_applications": [
+        {
+            "platform": "web",
+            "url": "https://obusk.github.io/rectangle-that/"
+        },
+    ]
+}

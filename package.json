@@ -4,7 +4,7 @@
   "description": "A blatant ripoff",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && npm run style && cp index.template.html dist/index.html",
+    "build": "tsc && npm run style && cp index.template.html dist/index.html && cp manifest.json dist/manifest.json ",
     "deploy": "npm run build && bash ./deploy.sh",
     "lite": "lite-server",
     "postinstall": "typings install",
