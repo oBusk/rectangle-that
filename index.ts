@@ -99,21 +99,28 @@ function applyLevelState(level: Level, elements: JQuery[][]) {
     level.forEach((row, rowIndex) => {
         row.forEach((cell, cellIndex) => {
             let classes: string;
+            let html: string;
             switch (cell) {
                 case 0:
                     classes = '';
+                    html = '';
                     break;
                 case 1:
                     classes = 'walkable';
+                    html = '';
                     break;
                 case 2:
                     classes = 'mover';
+                    html = '○';
                     break;
                 case 3:
                     classes = 'filled';
+                    html = '';
                     break;
             }
-            elements[rowIndex][cellIndex].attr('class', classes);
+            elements[rowIndex][cellIndex]
+                .attr('class', classes)
+                .html(html);
         });
     });
 }
@@ -183,8 +190,14 @@ function update() {
     if (isLevelCompleted()) {
         const newLevelNumber = currentLevelNumber + 1;
         if (levels[newLevelNumber]) {
-            startLevel(++currentLevelNumber);
-            applyLevelState(currentLevel, cells.arrayGrid);
+            setTimeout(() => {
+                cells.table.addClass('completed');
+                setTimeout(() => {
+                    startLevel(++currentLevelNumber);
+                    applyLevelState(currentLevel, cells.arrayGrid);
+                    cells.table.removeClass('completed');
+                }, 650)
+            }, 750);
         } else {
             alert('CONGRATS');
         }
@@ -192,7 +205,7 @@ function update() {
 }
 
 $(document)
-    .on('keydown', (e) => {
+    .on('keyup', (e) => {
 
         switch (e.keyCode) {
             case 87: // w
@@ -214,6 +227,8 @@ $(document)
             case 82: // r
                 reset();
                 break;
+            default:
+                return; // None of the supported keys were pressed, dont continue
         }
 
         update();
@@ -230,18 +245,22 @@ $(document)
         lastTouchMovePosition = { x: e.changedTouches[0].screenX, y: e.changedTouches[0].screenY };
     })
     .on('touchend', (e: any) => {
-        const minTouchDistance = 30;
+        const minSwipeDistance = 48;
 
         const delta = {
-            x: lastTouchMovePosition.x - touchStartPosition.x,
-            y: lastTouchMovePosition.y - touchStartPosition.y,
+            x: lastTouchMovePosition ? lastTouchMovePosition.x - touchStartPosition.x : 0,
+            y: lastTouchMovePosition ? lastTouchMovePosition.y - touchStartPosition.y : 0,
         }
 
         console.log(delta);
 
-        if (Math.abs(delta.x) < minTouchDistance && Math.abs(delta.y) < minTouchDistance) {
-            // neither of the horizontal or vertical was long enough
-            return;
+        if (Math.abs(delta.x) < minSwipeDistance && Math.abs(delta.y) < minSwipeDistance) {
+            if (e.changedTouches[0].target.id === 'reset-button') {
+                reset();
+            } else {
+                // neither of the horizontal or vertical was long enough
+                return;
+            }
         } else if (Math.abs(delta.x) > Math.abs(delta.y)) {
             // move horizontally
             move(delta.x < 0 ? 'left' : 'right');
@@ -250,10 +269,13 @@ $(document)
             move(delta.y < 0 ? 'up' : 'down');
         }
 
+        lastTouchMovePosition = undefined;
+
         update();
     })
 
-$('#reset-button').on('mousedown', () => {
-    reset();
-})
+// $('#reset-button').on('mouseup', e => {
+//     e.stopPropagation();
+//     reset();
+// })
 
