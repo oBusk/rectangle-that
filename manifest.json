@@ -4,6 +4,8 @@
     "start_url": ".",
     "display": "standalone",
     "background_color": "#56ab2f",
+    "theme_color": "#56ab2f",
+    "orientation": "portrait",
     "description": "A simple ripoff",
     "related_applications": [
         {
