@@ -3,48 +3,60 @@ type Level = Tile[][];
 type Coords = { x: number, y: number };
 
 const $game = $('game');
-const levels: Level[] = [
-    [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 1, 1, 0, 0],
-        [0, 1, 1, 2, 0],
-        [0, 1, 1, 1, 0],
-        [0, 0, 1, 1, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-    ],
-    [
-        [2, 1, 1, 1, 1],
-        [1, 1, 0, 0, 1],
-        [1, 1, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 2, 1, 1],
-        [1, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1],
-    ],
-    [
-        [0, 0, 0, 0, 0],
-        [0, 2, 1, 1, 0],
-        [0, 1, 1, 1, 0],
-        [0, 1, 1, 1, 0],
-        [0, 0, 1, 2, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-    ],
-    [
-        [0, 0, 0, 0, 0],
-        [0, 2, 1, 1, 0],
-        [0, 1, 1, 0, 0],
-        [0, 0, 1, 1, 0],
-        [0, 0, 1, 0, 0],
-        [0, 0, 1, 2, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-    ],
-    // [
+const levels: { background: string; level: Level }[] = [
+    {
+        background: 'linear-gradient(to left, #FBD3E9, #BB377D)',
+        level: [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 1, 1, 0, 0],
+            [0, 1, 1, 2, 0],
+            [0, 1, 1, 1, 0],
+            [0, 0, 1, 1, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ],
+    },
+    {
+        background: 'linear-gradient(to left, #4568DC , #B06AB3)',
+        level: [
+            [2, 1, 1, 1, 1],
+            [1, 1, 0, 0, 1],
+            [1, 1, 0, 0, 1],
+            [1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1],
+            [1, 0, 2, 1, 1],
+            [1, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1],
+        ],
+    },
+    {
+        background: 'linear-gradient(to left, #3a6186 , #89253e)',
+        level: [
+            [0, 0, 0, 0, 0],
+            [0, 2, 1, 1, 0],
+            [0, 1, 1, 1, 0],
+            [0, 1, 1, 1, 0],
+            [0, 0, 1, 2, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ],
+    },
+    {
+        background: 'linear-gradient(to left, #4DA0B0 , #D39D38)',
+        level: [
+            [0, 0, 0, 0, 0],
+            [0, 2, 1, 1, 0],
+            [0, 1, 1, 0, 0],
+            [0, 0, 1, 1, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 1, 2, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ],
+    }
+    // level: [
     //     [0, 0, 0, 0, 0],
     //     [0, 0, 0, 0, 0],
     //     [0, 0, 0, 0, 0],
@@ -69,7 +81,8 @@ $game.prepend(cells.table);
 applyLevelState(currentLevel, cells.arrayGrid);
 
 function startLevel(levelNumber: number) {
-    currentLevel = copyArrayGrid(levels[levelNumber]);
+    $('html').css('background', levels[levelNumber].background);
+    currentLevel = copyArrayGrid(levels[levelNumber].level);
 }
 
 function copyArrayGrid<T>(arr: T[][]) {
