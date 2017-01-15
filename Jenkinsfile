@@ -2,12 +2,15 @@ node('node') {
     try {
 
         stage 'Checkout'
-            git pull
+            checkout scm
 
         stage 'Update NPM'
             sh 'node -v'
             sh 'npm prune'
             sh 'npm install'
+
+        stage 'Build'
+            sh 'npm build'
 
         stage  'Deploy'
             echo 'Deploy'
