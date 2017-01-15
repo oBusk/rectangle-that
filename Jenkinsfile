@@ -1,4 +1,4 @@
-node {
+node('rectangle-that') {
     try {
 
         stage 'Checkout'
