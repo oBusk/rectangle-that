@@ -1,0 +1,70 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        env:
+            CI: true
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Use Node.js 14.x
+              uses: actions/setup-node@v2.1.1
+              with:
+                  node-version: 14.x
+            - name: Get cache dir, Node Version and NPM Version
+              id: node-config
+              run: |
+                  echo "::set-output name=nodev::$(node -v)"
+                  echo "::set-output name=npmv::$(npm -v)"
+                  echo "::set-output name=dir::$(npm config get cache)"
+            - name: Cache npm cache
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.node-config.outputs.dir }}
+                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      npm-${{ runner.os }}
+            - name: Install
+              run: npm ci
+            - name: Check Linting
+              run: npm run lint
+
+    build:
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        env:
+            CI: true
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Use Node.js 14.x
+              uses: actions/setup-node@v2.1.1
+              with:
+                  node-version: 14.x
+            - name: Get cache dir, Node Version and NPM Version
+              id: node-config
+              run: |
+                  echo "::set-output name=nodev::$(node -v)"
+                  echo "::set-output name=npmv::$(npm -v)"
+                  echo "::set-output name=dir::$(npm config get cache)"
+            - name: Cache npm cache
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.node-config.outputs.dir }}
+                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      npm-${{ runner.os }}
+            - name: Install
+              run: npm ci
+            - name: Build
+              run: npm run build

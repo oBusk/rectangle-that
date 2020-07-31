@@ -88,7 +88,7 @@ function startLevel(levelNumber: number) {
 function copyArrayGrid<T>(arr: T[][]) {
     return arr.map(a => {
         return a.slice();
-    })
+    });
 }
 
 function createField(width: number, height: number) {
@@ -209,7 +209,7 @@ function update() {
                     startLevel(++currentLevelNumber);
                     applyLevelState(currentLevel, cells.arrayGrid);
                     cells.table.removeClass('completed');
-                }, 650)
+                }, 650);
             }, 750);
         } else {
             alert('CONGRATS');
@@ -263,7 +263,7 @@ $(document)
         const delta = {
             x: lastTouchMovePosition ? lastTouchMovePosition.x - touchStartPosition.x : 0,
             y: lastTouchMovePosition ? lastTouchMovePosition.y - touchStartPosition.y : 0,
-        }
+        };
 
         console.log(delta);
 
@@ -285,10 +285,9 @@ $(document)
         lastTouchMovePosition = undefined;
 
         update();
-    })
+    });
 
 // $('#reset-button').on('mouseup', e => {
 //     e.stopPropagation();
 //     reset();
 // })
-
