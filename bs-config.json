@@ -1,6 +1,0 @@
-{
-  "injectChanges": true,
-  "server": {
-    "baseDir": "./dist"
-  }
-}

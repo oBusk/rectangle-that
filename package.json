@@ -4,34 +4,35 @@
   "version": "0.0.1",
   "description": "A blatant ripoff",
   "author": "Oscar Busk <oscar.busk@gmail.com>",
+  "engines": {
+    "node": "14.x",
+    "npm": "8.x"
+  },
   "volta": {
-    "node": "14.7.0",
-    "npm": "6.14.7"
+    "node": "14.18.3",
+    "npm": "8.3.1"
   },
   "main": "index.js",
   "scripts": {
     "build": "tsc && npm run style && cp index.template.html dist/index.html && cp manifest.json dist/manifest.json ",
-    "deploy": "npm run build && bash ./deploy.sh",
-    "lite": "lite-server",
-    "postinstall": "typings install",
-    "start": "npm run build && concurrently \"npm run tsc -- -w\" \"npm run lite\" \"npm run style:w\"",
+    "serve": "serve dist",
+    "start": "npm run build && concurrently \"npm run tsc -- -w\" \"npm run serve\" \"npm run style:w\"",
     "style": "lessc style.less dist/style.css",
     "style:w": "less-watch-compiler",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "typings": "typings",
     "lint": "tslint -p tsconfig.json",
     "lint-fix": "tslint -p tsconfig.json --fix"
   },
   "dependencies": {
-    "less": "^3.12.2",
-    "typescript": "^4.0.3",
-    "typings": "^2.1.1"
+    "less": "^4.1.2",
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
-    "concurrently": "^5.3.0",
-    "less-watch-compiler": "^1.14.6",
-    "lite-server": "^2.5.4",
+    "@types/jquery": "^3.5.13",
+    "concurrently": "^7.0.0",
+    "less-watch-compiler": "^1.16.3",
+    "serve": "^13.0.2",
     "tslint": "^6.1.3"
   }
 }
