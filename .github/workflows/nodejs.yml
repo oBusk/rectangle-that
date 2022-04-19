@@ -12,10 +12,8 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
-            - name: Use Node.js 14.x
-              uses: actions/setup-node@v2.1.2
-              with:
-                  node-version: 14.x
+            - name: Use volta versioning
+              uses: volta-cli/action@v1
             - name: Get cache dir, Node Version and NPM Version
               id: node-config
               run: |
@@ -26,13 +24,16 @@ jobs:
               uses: actions/cache@v3
               with:
                   path: ${{ steps.node-config.outputs.dir }}
-                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
-                      npm-${{ runner.os }}
+                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              with:
+                  path: "**/node_modules"
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
             - name: Install
-              run: npm ci
+              run: npm install
             - name: Check Linting
               run: npm run lint
 
@@ -45,10 +46,8 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
-            - name: Use Node.js 14.x
-              uses: actions/setup-node@v2.1.2
-              with:
-                  node-version: 14.x
+            - name: Use volta versioning
+              uses: volta-cli/action@v1
             - name: Get cache dir, Node Version and NPM Version
               id: node-config
               run: |
@@ -59,12 +58,13 @@ jobs:
               uses: actions/cache@v3
               with:
                   path: ${{ steps.node-config.outputs.dir }}
-                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
-                      npm-${{ runner.os }}
+                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              with:
+                  path: "**/node_modules"
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
             - name: Install
-              run: npm ci
-            - name: Build
-              run: npm run build
+              run: npm install
