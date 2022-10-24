@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.14",
-    "concurrently": "^7.1.0",
+    "concurrently": "^7.5.0",
     "less-watch-compiler": "^1.16.3",
     "serve": "^13.0.2",
     "tslint": "^6.1.3"
