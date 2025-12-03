@@ -5,20 +5,23 @@
   "description": "A blatant ripoff",
   "author": "Oscar Busk <oscar.busk@gmail.com>",
   "engines": {
-    "node": "14.x",
-    "npm": "8.x"
+    "node": "24.x"
   },
-  "volta": {
-    "node": "14.19.1",
-    "npm": "8.7.0"
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.11.1",
+      "onFail": "download"
+    }
   },
+  "packageManager": "pnpm@10.24.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && npm run style && cp index.template.html dist/index.html && cp manifest.json dist/manifest.json ",
+    "build": "tsc && pnpm run style && cp index.template.html dist/index.html && cp manifest.json dist/manifest.json ",
     "serve": "serve dist",
-    "start": "npm run build && concurrently \"npm run tsc -- -w\" \"npm run serve\" \"npm run style:w\"",
+    "start": "pnpm run build && concurrently \"pnpm run tsc -w\" \"pnpm run serve\" \"pnpm run style:w\"",
     "style": "lessc style.less dist/style.css",
-    "style:w": "less-watch-compiler",
+    "style:w": "chokidar style.less -c \"pnpm run style\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "lint": "tslint -p tsconfig.json",
@@ -30,8 +33,8 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.14",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^7.1.0",
-    "less-watch-compiler": "^1.16.3",
     "serve": "^13.0.2",
     "tslint": "^6.1.3"
   }
